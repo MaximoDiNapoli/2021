@@ -21,3 +21,24 @@ class Contenido{
         return this.duracion;
     }
 }
+
+
+class Movie{
+    protected titulo: String;
+    protected Region: Array<String>;
+    protected pelicula: Contenido;
+    constructor(titulo: String){
+        this.titulo = titulo;
+    }
+
+    setTitulo(titulo: String){
+        this.titulo = titulo;
+    }
+    getTitulo(){
+        return this.titulo;
+    }
+
+    disponible(regionUsuario: String){
+        return this.Region.find(element => element == regionUsuario);
+    }
+}
