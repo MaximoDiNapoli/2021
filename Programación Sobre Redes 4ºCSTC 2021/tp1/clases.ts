@@ -1,6 +1,6 @@
 class Contenido{
-    protected date: Date;
-    protected duracion: number;
+    private date: Date;
+    private duracion: number;
     constructor(duracion: number){
         this.duracion = duracion;
     }
@@ -23,10 +23,10 @@ class Contenido{
 }
 
 
-class Movie{
-    protected titulo: String;
-    protected Region: Array<String>;
-    protected pelicula: Contenido;
+class Pelicula{
+    private titulo: String;
+    private region: Array<String>;
+    private contenido: Contenido;
     constructor(titulo: String){
         this.titulo = titulo;
     }
@@ -38,7 +38,49 @@ class Movie{
         return this.titulo;
     }
 
-    disponible(regionUsuario: String){
-        return this.Region.find(element => element == regionUsuario);
+    disponible(region: String){
+        return this.region.find(element => element == region);
+    }
+
+    agregarRegion(region: String){
+        this.region.push(region);
+    }
+
+    getContenido(){
+        return this.contenido;
+    }
+
+    setContenido(contenido: Contenido){
+        this.contenido = contenido;
+    }
+}
+
+class Serie{
+    private titulo: String;
+    private region: Array<String>;
+    private contenido: Array<Contenido>;
+
+    constructor(titulo: String){
+        this.titulo = titulo;
+    }
+
+    getTitulo(){
+        return this.titulo;
+    }
+
+    setTitulo(titulo: String){
+        this.titulo = titulo;
+    }
+
+    disponible(region: String){
+        return this.region.find(element => element == region);
+    }
+
+    agregarRegion(region: String){
+        this.region.push(region);
+    }
+
+    quitarRegion(){
+
     }
 }
