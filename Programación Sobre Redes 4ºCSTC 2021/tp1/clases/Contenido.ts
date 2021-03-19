@@ -21,3 +21,9 @@ class Contenido{
         return this.duracion;
     }
 }
+
+class Titulo{
+    private titulo: String;
+    private region: Array<Region>;
+    private contenido: Array<Contenido>;
+}

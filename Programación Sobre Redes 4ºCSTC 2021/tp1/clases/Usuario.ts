@@ -6,7 +6,7 @@ class Visualizado{
         this.minuto = minuto;
     }
 
-    visto(titulo: String){
+    vistoPelicula(titulo: String){
         if(this.minuto == )
     }
 }
