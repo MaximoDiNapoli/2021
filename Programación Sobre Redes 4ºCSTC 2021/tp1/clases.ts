@@ -46,6 +46,10 @@ class Pelicula{
         this.region.push(region);
     }
 
+    quitarRegion(){
+        this.region.pop
+    }
+
     getContenido(){
         return this.contenido;
     }
@@ -81,6 +85,22 @@ class Serie{
     }
 
     quitarRegion(){
+        this.region.pop
+    }
 
+    agregarCapitulo(capitulo: Contenido){
+        this.contenido.push(capitulo);
+    }
+
+    obtenerCapitulo(capitulo: number){
+        return this.contenido[capitulo];
+    }
+
+    cantidadDeCapitulos(){
+        return this.contenido.length;
+    }
+
+    primerCapitulo(){
+        return this.contenido[0];
     }
 }
