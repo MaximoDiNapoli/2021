@@ -1,7 +1,19 @@
+class Historial{
+    private titulo: Titulo;
+    private tiempo: number;
+    constructor(titulo: Titulo, tiempo: number){
+        this.tiempo = tiempo;
+        this.titulo = titulo;
+    }
+
+
+}
+
 class Usuario{
     private username: String;
-    private region: Array<String>;
-    constructor(username: String, region: Array<String>){
+    private region: Region;
+    private Historial: Array<Historial>;
+    constructor(username: String, region: Region){
         this.username = username;
         this.region = region;
     }
@@ -13,4 +25,6 @@ class Usuario{
     getRegion(){
         return this.region;
     }
+
+    visto()
 }
