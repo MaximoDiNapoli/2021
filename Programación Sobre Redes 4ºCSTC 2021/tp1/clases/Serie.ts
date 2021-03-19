@@ -1,30 +1,29 @@
-class Serie{
-    private titulo: String;
-    private region: Array<Region>;
+class Serie extends Titulo{
+
     private contenido: Array<Contenido>;
 
-    constructor(titulo: String){
-        this.titulo = titulo;
+    constructor(titulo: String, region: Array<Region>, contenido: Array<Contenido>){
+        super(titulo, region);
+        this.contenido = contenido;
     }
 
     getTitulo(){
-        return this.titulo;
+        return (super.getTitulo());
     }
-
     setTitulo(titulo: String){
-        this.titulo = titulo;
+        super.setTitulo(titulo);
     }
 
     disponible(region: Region){
-        return this.region.find(element => element == region);
+        return (super.disponible(region));
     }
 
     agregarRegion(region: Region){
-        this.region.push(region);
+        super.agregarRegion(region);
     }
 
     quitarRegion(){
-        this.region.pop
+        super.quitarRegion();
     }
 
     agregarCapitulo(capitulo: Contenido){

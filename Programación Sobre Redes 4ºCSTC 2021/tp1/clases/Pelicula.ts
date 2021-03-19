@@ -1,28 +1,27 @@
-class Pelicula{
-    private titulo: String;
-    private region: Array<Region>;
+class Pelicula extends Titulo{
     private contenido: Contenido;
-    constructor(titulo: String){
-        this.titulo = titulo;
+    constructor(titulo: String, region: Array<Region>, contenido: Contenido){
+        super(titulo, region);
+        this.contenido = contenido;
     }
 
-    setTitulo(titulo: String){
-        this.titulo = titulo;
-    }
     getTitulo(){
-        return this.titulo;
+        return (super.getTitulo());
+    }
+    setTitulo(titulo: String){
+        super.setTitulo(titulo);
     }
 
     disponible(region: Region){
-        return this.region.find(element => element == region);
+        return (super.disponible(region));
     }
 
     agregarRegion(region: Region){
-        this.region.push(region);
+        super.agregarRegion(region);
     }
 
     quitarRegion(){
-        this.region.pop
+        super.quitarRegion();
     }
 
     getContenido(){
@@ -32,4 +31,5 @@ class Pelicula{
     setContenido(contenido: Contenido){
         this.contenido = contenido;
     }
+    
 }
