@@ -6,7 +6,10 @@ class Historial{
         this.titulo = titulo;
     }
 
+    getTiempo(titulo: Titulo){
+        return this.tiempo;
 
+    }
 }
 
 class Usuario{
@@ -26,5 +29,11 @@ class Usuario{
         return this.region;
     }
 
-    visto()
+    visto(titulo: Titulo){
+        Historial
+    }
+
+    ver(titulo:Titulo, tiempo_vizualizado: number){
+        
+    }
 }

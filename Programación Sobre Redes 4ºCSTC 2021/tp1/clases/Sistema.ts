@@ -30,4 +30,12 @@ class Sistema{
             }
         });
     }
+
+    getUsuarios(){
+        return this.usuarios;
+    }
+
+    getTitulos(){
+        return this.titulos;
+    }
 }
