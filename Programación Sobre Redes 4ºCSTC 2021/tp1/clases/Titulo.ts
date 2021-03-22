@@ -1,4 +1,11 @@
-class Titulo{
+interface Duracion {
+ 
+    getDuracionI(): number;
+    
+}
+
+
+class Titulo implements Duracion{
     private titulo: String;
     private region: Array<Region>;
 
@@ -6,11 +13,19 @@ class Titulo{
         this.titulo = titulo;
         this.region = region;
     }
+    getDuracionI(): number {
+        throw new Error("Method not implemented.");
+    }
 
     setTitulo(titulo: String){
         this.titulo = titulo;
     }
-    getTitulo(){
+
+    getRegion(){
+        return this.region;
+    }
+
+    getTitulo(): String{
         return this.titulo;
     }
 
@@ -23,6 +38,6 @@ class Titulo{
     }
 
     quitarRegion(){
-        this.region.pop
+        this.region.pop;
     }
 }

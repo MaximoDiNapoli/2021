@@ -5,6 +5,10 @@ class Pelicula extends Titulo{
         this.contenido = contenido;
     }
 
+    getDuracionI(){
+        return this.contenido.getDuracion();
+    }
+
     getTitulo(){
         return (super.getTitulo());
     }

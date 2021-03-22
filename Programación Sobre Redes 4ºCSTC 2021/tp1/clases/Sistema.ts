@@ -1,6 +1,7 @@
 class Sistema{
     usuarios: Array<Usuario>;
     titulos: Array<Titulo>;
+    getTitulo: any;
     agregarUsuario(usuario:Usuario){
         this.usuarios.forEach(element => {
             if(element.getUsername() == usuario.getUsername()){

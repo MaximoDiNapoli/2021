@@ -7,6 +7,10 @@ class Serie extends Titulo{
         this.contenido = contenido;
     }
 
+    getDuracionCapitulo(capitulo: number){
+        return this.contenido[capitulo].getDuracion;
+    }
+    
     getTitulo(){
         return (super.getTitulo());
     }
@@ -41,4 +45,8 @@ class Serie extends Titulo{
     primerCapitulo(){
         return this.contenido[0];
     }
+
+    getContenido(): Array<Contenido>{
+        return this.contenido;
+        }
 }
