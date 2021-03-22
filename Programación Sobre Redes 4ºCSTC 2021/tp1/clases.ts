@@ -103,6 +103,9 @@ class Pelicula extends Titulo{
 
 class Region{
     private region: String;
+    static AR: Region;
+    static CH: Region;
+    static BR: Region;
     constructor(region: String){
         this.region = region;
     }
@@ -309,6 +312,13 @@ class Usuario{
         if(!titulo.getRegion().includes(this.region)){
             return false;
         }
+        if(this.viendo(titulo)){
+
+        }
+        else if(!this.viendo(titulo){
+
+        }
     }
 }
 
+//https://prod.liveshare.vsengsaas.visualstudio.com/join?F144D75B034005195481F0367216AFBBFFA2
