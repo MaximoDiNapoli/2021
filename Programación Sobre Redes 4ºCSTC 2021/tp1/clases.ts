@@ -18,6 +18,10 @@ class Titulo implements Duracion{
         throw new Error("Method not implemented.");
     }
 
+    getNumeroCapitulos(): number {
+        throw new Error("Method not implemented.");
+    }
+
     setTitulo(titulo: String){
         this.titulo = titulo;
     }
@@ -147,6 +151,10 @@ class Serie extends Titulo{
     getDuracionI(cap: number){
         return this.contenido[cap].getDuracion();
     }
+
+    getNumeroCapitulos(): number {
+        return this.contenido.length;
+    }
     
     getTitulo(){
         return (super.getTitulo());
@@ -254,10 +262,13 @@ class Historial extends Sistema{
     }
 
     sumarCapitulo(): boolean{
-        if(this.titulo.ge)
+        if(this.titulo.getNumeroCapitulos() > this.capitulo){
             this.capitulo = this.capitulo + 1;
             return true
+        }
+        else{
             return false
+        }
     }
 
     getCapitulo(): number{
@@ -332,16 +343,22 @@ class Usuario{
         }
         else if(!this.viendo(titulo)){
             let numeroi;
+            let tiempo_pre_visualizado;
             this.historial.forEach(element => {
                 if(element.getTituloNombre() == titulo.getTitulo()){
                     numeroi = element.getCapitulo();
+                    tiempo_pre_visualizado = element.setTiempo;
                 }
             });
-            while(titulo.getDuracionI(numeroi) >= tiempo_visualizado){
+            var i: boolean = true
+            tiempo_visualizado = tiempo_visualizado + tiempo_pre_visualizado;
+            while(titulo.getDuracionI(numeroi) >= tiempo_visualizado && i){
                 tiempo_visualizado = tiempo_visualizado - titulo.getDuracionI(numeroi);
                 this.historial.forEach(element => {
                     if(element.getTituloNombre() == titulo.getTitulo()){
-                        element.sumarCapitulo;
+                        if(!element.sumarCapitulo){
+                            i = false;
+                        }
                     }
                 });
             }
@@ -352,4 +369,5 @@ class Usuario{
             
         });
     }
+}
 }
