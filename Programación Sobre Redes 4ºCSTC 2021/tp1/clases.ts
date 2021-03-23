@@ -1,6 +1,11 @@
 export { Region, Pelicula, Contenido, Serie, Usuario, Sistema};
 //a
 
+interface Duracion {
+ 
+    getDuracionI(cap: number): number;
+    
+}
 
 class Titulo implements Duracion{
     private titulo: String;
@@ -9,7 +14,7 @@ class Titulo implements Duracion{
     constructor(titulo: String){
         this.titulo = titulo;
     }
-    getDuracionI(): number {
+    getDuracionI(cap: number): number {
         throw new Error("Method not implemented.");
     }
 
@@ -68,7 +73,7 @@ class Pelicula extends Titulo{
         super(titulo);
     }
 
-    getDuracionI(){
+    getDuracionI(cap: number){
         return this.contenido.getDuracion();
     }
 
@@ -136,7 +141,11 @@ class Serie extends Titulo{
     }
 
     getDuracionCapitulo(capitulo: number){
-        return this.contenido[capitulo].getDuracion;
+        return this.contenido[capitulo].getDuracion();
+    }
+
+    getDuracionI(cap: number){
+        return this.contenido[cap].getDuracion();
     }
     
     getTitulo(){
@@ -222,12 +231,6 @@ class Sistema{
     }
 }
 
-interface Duracion {
- 
-    getDuracionI(): number;
-    
-}
-
 class Historial extends Sistema{
     private titulo: Titulo;
     private tiempo: number;
@@ -241,14 +244,24 @@ class Historial extends Sistema{
         this.terminada = terminada;
     }
 
+    setTiempo(a: number){
+        this.tiempo = a;
+    }
+
     getTiempo(){
         return this.tiempo;
 
     }
 
+    sumarCapitulo(): boolean{
+        if(this.titulo.ge)
+            this.capitulo = this.capitulo + 1;
+            return true
+            return false
+    }
+
     getCapitulo(): number{
         return this.capitulo;
-
     }
 
     getTituloNombre(): String{
@@ -313,12 +326,30 @@ class Usuario{
             return false;
         }
         if(this.viendo(titulo)){
+            var a: Historial = new Historial(titulo,0,0,false);
+            this.historial.push(a);
 
         }
-        else if(!this.viendo(titulo){
-
-        }
+        else if(!this.viendo(titulo)){
+            let numeroi;
+            this.historial.forEach(element => {
+                if(element.getTituloNombre() == titulo.getTitulo()){
+                    numeroi = element.getCapitulo();
+                }
+            });
+            while(titulo.getDuracionI(numeroi) >= tiempo_visualizado){
+                tiempo_visualizado = tiempo_visualizado - titulo.getDuracionI(numeroi);
+                this.historial.forEach(element => {
+                    if(element.getTituloNombre() == titulo.getTitulo()){
+                        element.sumarCapitulo;
+                    }
+                });
+            }
+            this.historial.forEach(element => {
+                if(element.getTituloNombre() == titulo.getTitulo()){
+                    element.setTiempo(tiempo_visualizado);
+            }
+            
+        });
     }
 }
-
-//https://prod.liveshare.vsengsaas.visualstudio.com/join?F144D75B034005195481F0367216AFBBFFA2
