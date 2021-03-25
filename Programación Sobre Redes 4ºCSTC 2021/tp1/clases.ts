@@ -35,7 +35,12 @@ class Titulo implements Duracion{
     }
 
     disponible(region: Region){
-        return this.region.find(element => element == region);
+        this.region.forEach(element => {
+            if(element.getRegion() == region.getRegion()){
+                return true;
+            }
+        });
+        return false;
     }
 
     agregarRegion(region: Region){
@@ -69,6 +74,11 @@ class Contenido{
     getDuracion(){
         return this.duracion;
     }
+
+    length(a: Array<Contenido>){
+        var i: number = a.length
+        return i;
+    }
 }
 
 class Pelicula extends Titulo{
@@ -84,6 +94,7 @@ class Pelicula extends Titulo{
     getTitulo(){
         return (super.getTitulo());
     }
+
     setTitulo(titulo: String){
         super.setTitulo(titulo);
     }
@@ -134,6 +145,7 @@ class Region{
     getRegion(){
         return this.region;
     }
+
 }
 
 class Serie extends Titulo{
@@ -201,11 +213,11 @@ class Sistema{
     titulos: Array<Titulo>;
     getTitulo: any;
     agregarUsuario(usuario:Usuario){
-        this.usuarios.forEach(element => {
-            if(element.getUsername() == usuario.getUsername()){
+        for(var i: number = 1; i < this.usuarios.length;i++){
+            if(this.usuarios[i].getUsername() == usuario.getUsername()){
                 return false;
             }
-        });
+        }
         this.usuarios.push(usuario);
         return true;
     }
@@ -215,19 +227,19 @@ class Sistema{
     }
 
     buscarUsuario(nombre: String){
-        this.usuarios.forEach(element => {
-            if(element.getUsername() == nombre){
-                return element;
+        for(var i: number = 1; i < this.usuarios.length;i++){
+            if(this.usuarios[i].getUsername() == nombre){
+                return this.usuarios[i];
             }
-        });
+        }
     }
 
     buscarTitulo(nombre: String){
-        this.titulos.forEach(element => {
-            if(element.getTitulo() == nombre){
-                return element;
+        for(var i: number = 1; i < this.usuarios.length;i++){
+            if(this.titulos[i].getTitulo() == nombre){
+                return this.titulos[i];
             }
-        });
+        }
     }
 
     getUsuarios(){
@@ -251,6 +263,7 @@ class Historial extends Sistema{
         this.capitulo = capitulo;
         this.terminada = terminada;
     }
+
 
     setTiempo(a: number){
         this.tiempo = a;
@@ -302,14 +315,15 @@ class Usuario{
         return this.region;
     }
 
+
     visto(titulo: Titulo){
-        this.historial.forEach(element => {
-            if(element.getTituloNombre() == titulo.getTitulo()){
-                if(element.getTerminada){
+        for(var i: number = 1; i < this.historial.length;i++){
+            if(this.historial[i].getTitulo() == titulo.getTitulo()){
+                if(this.historial[i].getTerminada){
                     return true;
                 }
             }
-        });
+        }
         return false;
     }
 
@@ -333,7 +347,11 @@ class Usuario{
     }
 
     ver(titulo: Titulo, tiempo_visualizado: number){
-        if(!titulo.getRegion().includes(this.region)){
+        for(var i: number = 1; i < this.historial.length;i++){
+            var b: Titulo = this.historial[i].getTitulo()
+            if(b.getRegion() == titulo.getRegion()){
+                break;
+            }
             return false;
         }
         if(this.viendo(titulo)){
@@ -350,14 +368,14 @@ class Usuario{
                     tiempo_pre_visualizado = element.setTiempo;
                 }
             });
-            var i: boolean = true
+            var c: boolean = true
             tiempo_visualizado = tiempo_visualizado + tiempo_pre_visualizado;
             while(titulo.getDuracionI(numeroi) >= tiempo_visualizado && i){
                 tiempo_visualizado = tiempo_visualizado - titulo.getDuracionI(numeroi);
                 this.historial.forEach(element => {
                     if(element.getTituloNombre() == titulo.getTitulo()){
                         if(!element.sumarCapitulo){
-                            i = false;
+                            c = false;
                         }
                     }
                 });
