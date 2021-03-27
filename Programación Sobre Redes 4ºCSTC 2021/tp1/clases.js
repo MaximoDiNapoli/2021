@@ -19,6 +19,7 @@ exports.Sistema = exports.Usuario = exports.Serie = exports.Contenido = exports.
 var Titulo = /** @class */ (function () {
     function Titulo(titulo) {
         this.titulo = titulo;
+        this.region = [];
     }
     Titulo.prototype.getDuracionI = function (cap) {
         throw new Error("Method not implemented.");
@@ -29,14 +30,22 @@ var Titulo = /** @class */ (function () {
     Titulo.prototype.setTitulo = function (titulo) {
         this.titulo = titulo;
     };
-    Titulo.prototype.getRegion = function () {
-        return this.region;
+    Titulo.prototype.getRegion = function (i) {
+        return this.region[i];
     };
     Titulo.prototype.getTitulo = function () {
         return this.titulo;
     };
     Titulo.prototype.disponible = function (region) {
-        return this.region.find(function (element) { return element == region; });
+        this.region.forEach(function (element) {
+            if (element.getRegion() == region.getRegion()) {
+                return true;
+            }
+        });
+        return false;
+    };
+    Titulo.prototype.getNumeroDeRegiones = function () {
+        return this.region.length;
     };
     Titulo.prototype.agregarRegion = function (region) {
         this.region.push(region);
@@ -61,6 +70,10 @@ var Contenido = /** @class */ (function () {
     };
     Contenido.prototype.getDuracion = function () {
         return this.duracion;
+    };
+    Contenido.prototype.length = function (a) {
+        var i = a.length;
+        return i;
     };
     return Contenido;
 }());
@@ -101,28 +114,27 @@ var Region = /** @class */ (function () {
     function Region(region) {
         this.region = region;
     }
-    Region.prototype.AR = function () {
-        this.region = "AR";
-    };
-    Region.prototype.BR = function () {
-        this.region = "BR";
-    };
-    Region.prototype.CH = function () {
-        this.region = "CH";
-    };
     Region.prototype.getRegion = function () {
         return this.region;
     };
+    Region.AR = new Region("AR");
+    Region.CH = new Region('CH');
+    Region.BR = new Region('BR');
     return Region;
 }());
 exports.Region = Region;
 var Serie = /** @class */ (function (_super) {
     __extends(Serie, _super);
     function Serie(titulo) {
-        return _super.call(this, titulo) || this;
+        var _this = _super.call(this, titulo) || this;
+        _this.contenido = [];
+        return _this;
     }
     Serie.prototype.getDuracionCapitulo = function (capitulo) {
-        return this.contenido[capitulo].getDuracion();
+        if (this.contenido.length < capitulo) {
+            return this.contenido[capitulo].getDuracion();
+        }
+        return 0;
     };
     Serie.prototype.getDuracionI = function (cap) {
         return this.contenido[cap].getDuracion();
@@ -165,13 +177,15 @@ var Serie = /** @class */ (function (_super) {
 exports.Serie = Serie;
 var Sistema = /** @class */ (function () {
     function Sistema() {
+        this.usuarios = [];
+        this.titulos = [];
     }
     Sistema.prototype.agregarUsuario = function (usuario) {
-        this.usuarios.forEach(function (element) {
-            if (element.getUsername() == usuario.getUsername()) {
+        for (var i = 1; i < this.usuarios.length; i++) {
+            if (this.usuarios[i].getUsername() == usuario.getUsername()) {
                 return false;
             }
-        });
+        }
         this.usuarios.push(usuario);
         return true;
     };
@@ -179,18 +193,18 @@ var Sistema = /** @class */ (function () {
         this.titulos.push(titulo);
     };
     Sistema.prototype.buscarUsuario = function (nombre) {
-        this.usuarios.forEach(function (element) {
-            if (element.getUsername() == nombre) {
-                return element;
+        for (var i = 1; i < this.usuarios.length; i++) {
+            if (this.usuarios[i].getUsername() == nombre) {
+                return this.usuarios[i];
             }
-        });
+        }
     };
     Sistema.prototype.buscarTitulo = function (nombre) {
-        this.titulos.forEach(function (element) {
-            if (element.getTitulo() == nombre) {
-                return element;
+        for (var i = 1; i < this.usuarios.length; i++) {
+            if (this.titulos[i].getTitulo() == nombre) {
+                return this.titulos[i];
             }
-        });
+        }
     };
     Sistema.prototype.getUsuarios = function () {
         return this.usuarios;
@@ -239,8 +253,11 @@ var Historial = /** @class */ (function (_super) {
 }(Sistema));
 var Usuario = /** @class */ (function () {
     function Usuario(username, region) {
+        var titulo = new Titulo("a");
         this.username = username;
         this.region = region;
+        this.historial = [];
+        this.historial[0] = new Historial(titulo, 0, 0, false);
     }
     Usuario.prototype.getUsername = function () {
         return this.username;
@@ -249,13 +266,13 @@ var Usuario = /** @class */ (function () {
         return this.region;
     };
     Usuario.prototype.visto = function (titulo) {
-        this.historial.forEach(function (element) {
-            if (element.getTituloNombre() == titulo.getTitulo()) {
-                if (element.getTerminada) {
+        for (var i = 1; i < this.historial.length; i++) {
+            if (this.historial[i].getTituloNombre() == titulo.getTitulo()) {
+                if (this.historial[i].getTerminada) {
                     return true;
                 }
             }
-        });
+        }
         return false;
     };
     Usuario.prototype.viendo = function (titulo) {
@@ -277,40 +294,42 @@ var Usuario = /** @class */ (function () {
         return 0;
     };
     Usuario.prototype.ver = function (titulo, tiempo_visualizado) {
-        if (!titulo.getRegion().includes(this.region)) {
-            return false;
+        var temp1 = false;
+        var numeroi;
+        var tiempo_pre_visualizado;
+        var c = true;
+        for (var i = 0; i < titulo.getNumeroDeRegiones(); i++) {
+            if (this.region == titulo.getRegion(i)) {
+                temp1 = true;
+            }
         }
-        if (this.viendo(titulo)) {
+        if (!this.viendo(titulo)) {
             var a = new Historial(titulo, 0, 0, false);
             this.historial.push(a);
         }
-        else if (!this.viendo(titulo)) {
-            var numeroi_1;
-            var tiempo_pre_visualizado_1;
-            this.historial.forEach(function (element) {
-                if (element.getTituloNombre() == titulo.getTitulo()) {
-                    numeroi_1 = element.getCapitulo();
-                    tiempo_pre_visualizado_1 = element.setTiempo;
-                }
-            });
-            var i = true;
-            tiempo_visualizado = tiempo_visualizado + tiempo_pre_visualizado_1;
-            while (titulo.getDuracionI(numeroi_1) >= tiempo_visualizado && i) {
-                tiempo_visualizado = tiempo_visualizado - titulo.getDuracionI(numeroi_1);
-                this.historial.forEach(function (element) {
-                    if (element.getTituloNombre() == titulo.getTitulo()) {
-                        if (!element.sumarCapitulo) {
-                            i = false;
-                        }
-                    }
-                });
+        this.historial.forEach(function (element) {
+            if (element.getTituloNombre() == titulo.getTitulo()) {
+                numeroi = element.getCapitulo();
+                tiempo_pre_visualizado = element.setTiempo;
             }
+        });
+        tiempo_visualizado = tiempo_visualizado + tiempo_pre_visualizado;
+        while (titulo.getDuracionI(numeroi) >= tiempo_visualizado) {
+            tiempo_visualizado = tiempo_visualizado - titulo.getDuracionI(numeroi);
             this.historial.forEach(function (element) {
                 if (element.getTituloNombre() == titulo.getTitulo()) {
-                    element.setTiempo(tiempo_visualizado);
+                    if (!element.sumarCapitulo) {
+                        c = false;
+                    }
                 }
             });
         }
+        this.historial.forEach(function (element) {
+            if (element.getTituloNombre() == titulo.getTitulo()) {
+                element.setTiempo(tiempo_visualizado);
+            }
+        });
+        return temp1;
     };
     return Usuario;
 }());

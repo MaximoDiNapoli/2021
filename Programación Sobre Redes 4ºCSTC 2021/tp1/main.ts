@@ -10,7 +10,6 @@ IPMStreaming.agregarUsuario(mi_usuario);
 let otro_usuario = new Usuario("Juan", Region.CH);
 IPMStreaming.agregarUsuario(otro_usuario);
 
-
 // Pelicula de 140 minutos disponible para Chile
 let una_peli = new Pelicula("Lord of the computers");
 una_peli.setContenido(new Contenido(140));
