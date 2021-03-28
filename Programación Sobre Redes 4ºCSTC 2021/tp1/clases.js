@@ -37,13 +37,13 @@ var Titulo = /** @class */ (function () {
         return this.titulo;
     };
     Titulo.prototype.disponible = function (region) {
-        var x = false;
+        var disponible = false;
         this.region.forEach(function (element) {
             if (element.getRegion() == region.getRegion()) {
-                x = true;
+                disponible = true;
             }
         });
-        return x;
+        return disponible;
     };
     Titulo.prototype.getNumeroDeRegiones = function () {
         return this.region.length;
@@ -229,21 +229,15 @@ var Historial = /** @class */ (function () {
     Historial.prototype.setTiempo = function (a) {
         this.tiempo = a;
     };
-    Historial.prototype.setTerminada = function (n) {
-        n = n;
-        console.log(n);
-        console.log(this.capitulo);
-        if (this.capitulo == n) {
-            this.terminada = true;
-            console.log(this.terminada);
-        }
+    Historial.prototype.setTerminada = function () {
+        this.terminada = true;
     };
     Historial.prototype.getTiempo = function () {
         return this.tiempo;
     };
     Historial.prototype.sumarCapitulo = function () {
-        if (this.titulo.getNumeroCapitulos() > this.capitulo) {
-            this.capitulo = this.capitulo + 1;
+        if (this.titulo.getNumeroCapitulos() - 1 > this.capitulo) {
+            this.capitulo++;
             return true;
         }
         else {
@@ -263,11 +257,9 @@ var Historial = /** @class */ (function () {
 }());
 var Usuario = /** @class */ (function () {
     function Usuario(username, region) {
-        var titulo = new Titulo("a");
         this.username = username;
         this.region = region;
         this.historial = [];
-        this.historial[0] = new Historial(titulo, 0, 0, false);
     }
     Usuario.prototype.getUsername = function () {
         return this.username;
@@ -278,7 +270,7 @@ var Usuario = /** @class */ (function () {
     Usuario.prototype.visto = function (titulo) {
         for (var i = 0; i < this.historial.length; i++) {
             if (this.historial[i].getTituloNombre() == titulo.getTitulo()) {
-                if (this.historial[i].getTerminada) {
+                if (this.historial[i].getTerminada()) {
                     return true;
                 }
             }
@@ -287,8 +279,12 @@ var Usuario = /** @class */ (function () {
     };
     Usuario.prototype.viendo = function (titulo) {
         for (var i = 0; i < this.historial.length; i++) {
-            if (this.historial[i].getCapitulo() > 0 || this.historial[i].getTiempo() > 0) {
-                return true;
+            if (this.historial[i].getTituloNombre() == titulo.getTitulo()) {
+                if (this.historial[i].getCapitulo() > 0 || this.historial[i].getTiempo() > 0) {
+                    if (!this.historial[i].getTerminada()) {
+                        return true;
+                    }
+                }
             }
         }
         return false;
@@ -303,16 +299,13 @@ var Usuario = /** @class */ (function () {
         return x;
     };
     Usuario.prototype.ver = function (titulo, tiempo_visualizado) {
-        var temp1 = false;
-        var numeroi = 0;
+        var DeberiaPoderVerla = false;
+        var UltimoCap = 0;
         var tiempo_pre_visualizado;
-        var c = true;
-        for (var i = 0; i < titulo.getNumeroDeRegiones(); i++) {
-            if (this.region == titulo.getRegion(i)) {
-                temp1 = true;
-            }
+        if (titulo.disponible(this.region)) {
+            DeberiaPoderVerla = true;
         }
-        if (!temp1) {
+        if (!DeberiaPoderVerla) {
             return false;
         }
         if (!this.viendo(titulo)) {
@@ -321,17 +314,18 @@ var Usuario = /** @class */ (function () {
         }
         this.historial.forEach(function (element) {
             if (element.getTituloNombre() == titulo.getTitulo()) {
-                numeroi = element.getCapitulo();
+                UltimoCap = element.getCapitulo();
                 tiempo_pre_visualizado = element.getTiempo();
             }
         });
         tiempo_visualizado = tiempo_visualizado + tiempo_pre_visualizado;
-        while (titulo.getDuracionI(numeroi) <= tiempo_visualizado) {
-            tiempo_visualizado = tiempo_visualizado - titulo.getDuracionI(numeroi);
+        while (titulo.getDuracionI(UltimoCap) <= tiempo_visualizado) {
+            tiempo_visualizado = tiempo_visualizado - titulo.getDuracionI(UltimoCap);
             this.historial.forEach(function (element) {
                 if (element.getTituloNombre() == titulo.getTitulo()) {
-                    element.setTerminada(element.getCapitulo());
-                    element.sumarCapitulo();
+                    if (!element.sumarCapitulo()) {
+                        element.setTerminada();
+                    }
                 }
             });
         }
@@ -340,7 +334,7 @@ var Usuario = /** @class */ (function () {
                 element.setTiempo(tiempo_visualizado);
             }
         });
-        return temp1;
+        return DeberiaPoderVerla;
     };
     return Usuario;
 }());
