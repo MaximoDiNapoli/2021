@@ -79,11 +79,6 @@ class Contenido{
     getDuracion(){
         return this.duracion;
     }
-
-    length(a: Array<Contenido>){
-        var i: number = a.length
-        return i;
-    }
 }
 
 class Pelicula extends Titulo{
@@ -268,8 +263,8 @@ class Historial{
     }
 
 
-    setTiempo(a: number){
-        this.tiempo = a;
+    setTiempo(tiempo: number){
+        this.tiempo = tiempo;
     }
 
     setTerminada(){
@@ -348,13 +343,13 @@ class Usuario{
         return false;
     }
     capituloActual(serie: Titulo){
-        let x: number = 0;
+        let capituloActual: number = 0;
         this.historial.forEach(element => {
             if(element.getTituloNombre() == serie.getTitulo()){
-                x = element.getCapitulo()
+                capituloActual = element.getCapitulo()
             }
         });
-        return x;
+        return capituloActual;
     }
 
     ver(titulo: Titulo, tiempo_visualizado: number){

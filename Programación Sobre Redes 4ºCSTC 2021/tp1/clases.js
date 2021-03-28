@@ -72,10 +72,6 @@ var Contenido = /** @class */ (function () {
     Contenido.prototype.getDuracion = function () {
         return this.duracion;
     };
-    Contenido.prototype.length = function (a) {
-        var i = a.length;
-        return i;
-    };
     return Contenido;
 }());
 exports.Contenido = Contenido;
@@ -226,8 +222,8 @@ var Historial = /** @class */ (function () {
         this.capitulo = capitulo;
         this.terminada = terminada;
     }
-    Historial.prototype.setTiempo = function (a) {
-        this.tiempo = a;
+    Historial.prototype.setTiempo = function (tiempo) {
+        this.tiempo = tiempo;
     };
     Historial.prototype.setTerminada = function () {
         this.terminada = true;
@@ -290,13 +286,13 @@ var Usuario = /** @class */ (function () {
         return false;
     };
     Usuario.prototype.capituloActual = function (serie) {
-        var x = 0;
+        var capituloActual = 0;
         this.historial.forEach(function (element) {
             if (element.getTituloNombre() == serie.getTitulo()) {
-                x = element.getCapitulo();
+                capituloActual = element.getCapitulo();
             }
         });
-        return x;
+        return capituloActual;
     };
     Usuario.prototype.ver = function (titulo, tiempo_visualizado) {
         var DeberiaPoderVerla = false;
