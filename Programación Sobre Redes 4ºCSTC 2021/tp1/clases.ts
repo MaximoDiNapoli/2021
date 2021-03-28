@@ -36,12 +36,13 @@ class Titulo implements Duracion{
     }
 
     disponible(region: Region){
+        var x: boolean = false;
         this.region.forEach(element => {
             if(element.getRegion() == region.getRegion()){
-                return true;
+                x = true;
             }
         });
-        return false;
+        return x;
     }
 
     getNumeroDeRegiones(){
@@ -93,6 +94,10 @@ class Pelicula extends Titulo{
 
     getDuracionI(cap: number){
         return this.contenido.getDuracion();
+    }
+
+    getNumeroCapitulos(){
+        return 0;
     }
 
     getTitulo(){
@@ -154,11 +159,11 @@ class Serie extends Titulo{
     }
 
     getDuracionI(cap: number){
-        return this.contenido[cap].getDuracion();
+        return (this.contenido[cap].getDuracion());
     }
 
     getNumeroCapitulos(): number {
-        return this.contenido.length;
+        return this.contenido.length; 
     }
     
     getTitulo(){
@@ -251,13 +256,12 @@ class Sistema{
     }
 }
 
-class Historial extends Sistema{
+class Historial{
     private titulo: Titulo;
     private tiempo: number;
     private capitulo: number;
     private terminada: boolean;
     constructor(titulo: Titulo, tiempo: number, capitulo: number, terminada: boolean){
-        super();
         this.tiempo = tiempo;
         this.titulo = titulo;
         this.capitulo = capitulo;
@@ -267,6 +271,16 @@ class Historial extends Sistema{
 
     setTiempo(a: number){
         this.tiempo = a;
+    }
+
+    setTerminada(n: number){
+        n = n
+        console.log(n)
+        console.log(this.capitulo)
+        if(this.capitulo == n){
+            this.terminada = true;
+            console.log(this.terminada)
+        }
     }
 
 
@@ -279,6 +293,7 @@ class Historial extends Sistema{
         if(this.titulo.getNumeroCapitulos() > this.capitulo){
             this.capitulo = this.capitulo + 1;
             return true
+            
         }
         else{
             return false
@@ -321,9 +336,10 @@ class Usuario{
 
 
     visto(titulo: Titulo){
-        for(var i: number = 1; i < this.historial.length;i++){
+        for(var i: number = 0; i < this.historial.length;i++){
             if(this.historial[i].getTituloNombre() == titulo.getTitulo()){
                 if(this.historial[i].getTerminada){
+
                     return true;
                 }
             }
@@ -331,34 +347,36 @@ class Usuario{
         return false;
     }
 
-    viendo(titulo:Titulo){
-        this.historial.forEach(element => {
-            if(element.getTituloNombre() == titulo.getTitulo()){
-                if(element.getCapitulo() > 0 || element.getTiempo() > 0){
-                    return true;
-                }
+    viendo(titulo:Titulo): boolean{
+        for(var i: number = 0; i<this.historial.length; i++){
+            if(this.historial[i].getCapitulo() > 0 || this.historial[i].getTiempo() > 0){
+                return true;
             }
-        });
+        }
         return false;
     }
     capituloActual(serie: Titulo){
+        let x: number = 0;
         this.historial.forEach(element => {
             if(element.getTituloNombre() == serie.getTitulo()){
-                return element.getCapitulo()
+                x = element.getCapitulo()
             }
         });
-        return 0;
+        return x;
     }
 
     ver(titulo: Titulo, tiempo_visualizado: number){
         var temp1: boolean = false;       
-        let numeroi;
+        let numeroi = 0;
         let tiempo_pre_visualizado;
         var c: boolean = true
         for(var i: number = 0; i < titulo.getNumeroDeRegiones();i++){
             if(this.region == titulo.getRegion(i)){
                 temp1 = true;
             }
+        }
+        if(!temp1){
+            return false;
         }
         if(!this.viendo(titulo)){
             var a: Historial = new Historial(titulo,0,0,false);
@@ -368,19 +386,21 @@ class Usuario{
         this.historial.forEach(element => {
             if(element.getTituloNombre() == titulo.getTitulo()){
                 numeroi = element.getCapitulo();
-                tiempo_pre_visualizado = element.setTiempo;
+                tiempo_pre_visualizado = element.getTiempo();
             }
         });
+        
         tiempo_visualizado = tiempo_visualizado + tiempo_pre_visualizado;
-        while(titulo.getDuracionI(numeroi) >= tiempo_visualizado){
-            tiempo_visualizado = tiempo_visualizado - titulo.getDuracionI(numeroi);
+
+        while(titulo.getDuracionI(numeroi) <= tiempo_visualizado){
+            tiempo_visualizado =  tiempo_visualizado - titulo.getDuracionI(numeroi);
             this.historial.forEach(element => {
                 if(element.getTituloNombre() == titulo.getTitulo()){
-                    if(!element.sumarCapitulo){
-                        c = false;
-                    }
+                    element.setTerminada(element.getCapitulo());
+                    element.sumarCapitulo()
                 }
             });
+
         }
         this.historial.forEach(element => {
             if(element.getTituloNombre() == titulo.getTitulo()){

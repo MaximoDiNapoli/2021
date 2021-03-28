@@ -38,7 +38,7 @@ if(mi_usuario.capituloActual(una_serie) != 0) console.log("Pepe está en el capi
 if(!mi_usuario.ver(una_serie, 40)) console.log("Pepe debería poder ver esa serie");
 if(mi_usuario.capituloActual(una_serie) != 1) console.log("Pepe está en el capitulo 1");
 if(!mi_usuario.ver(una_serie, 40)) console.log("Pepe debería poder ver esa serie");
-if(mi_usuario.capituloActual(una_serie) != 1) console.log("a Pepe le queda un minuto del capitulo 1");
+if(mi_usuario.capituloActual(una_serie) != 1) console.log("Pepe le queda un minuto del capitulo 1");
 if(!mi_usuario.ver(una_serie, 1)) console.log("Pepe debería poder ver esa serie");
 if(mi_usuario.capituloActual(una_serie) != 2) console.log("Pepe está en el capitulo 2");
 if(!mi_usuario.ver(una_serie, 45)) console.log("Pepe debería poder ver esa serie");

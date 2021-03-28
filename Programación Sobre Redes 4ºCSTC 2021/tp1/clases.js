@@ -37,12 +37,13 @@ var Titulo = /** @class */ (function () {
         return this.titulo;
     };
     Titulo.prototype.disponible = function (region) {
+        var x = false;
         this.region.forEach(function (element) {
             if (element.getRegion() == region.getRegion()) {
-                return true;
+                x = true;
             }
         });
-        return false;
+        return x;
     };
     Titulo.prototype.getNumeroDeRegiones = function () {
         return this.region.length;
@@ -85,6 +86,9 @@ var Pelicula = /** @class */ (function (_super) {
     }
     Pelicula.prototype.getDuracionI = function (cap) {
         return this.contenido.getDuracion();
+    };
+    Pelicula.prototype.getNumeroCapitulos = function () {
+        return 0;
     };
     Pelicula.prototype.getTitulo = function () {
         return (_super.prototype.getTitulo.call(this));
@@ -137,7 +141,7 @@ var Serie = /** @class */ (function (_super) {
         return 0;
     };
     Serie.prototype.getDuracionI = function (cap) {
-        return this.contenido[cap].getDuracion();
+        return (this.contenido[cap].getDuracion());
     };
     Serie.prototype.getNumeroCapitulos = function () {
         return this.contenido.length;
@@ -215,18 +219,24 @@ var Sistema = /** @class */ (function () {
     return Sistema;
 }());
 exports.Sistema = Sistema;
-var Historial = /** @class */ (function (_super) {
-    __extends(Historial, _super);
+var Historial = /** @class */ (function () {
     function Historial(titulo, tiempo, capitulo, terminada) {
-        var _this = _super.call(this) || this;
-        _this.tiempo = tiempo;
-        _this.titulo = titulo;
-        _this.capitulo = capitulo;
-        _this.terminada = terminada;
-        return _this;
+        this.tiempo = tiempo;
+        this.titulo = titulo;
+        this.capitulo = capitulo;
+        this.terminada = terminada;
     }
     Historial.prototype.setTiempo = function (a) {
         this.tiempo = a;
+    };
+    Historial.prototype.setTerminada = function (n) {
+        n = n;
+        console.log(n);
+        console.log(this.capitulo);
+        if (this.capitulo == n) {
+            this.terminada = true;
+            console.log(this.terminada);
+        }
     };
     Historial.prototype.getTiempo = function () {
         return this.tiempo;
@@ -250,7 +260,7 @@ var Historial = /** @class */ (function (_super) {
         return this.terminada;
     };
     return Historial;
-}(Sistema));
+}());
 var Usuario = /** @class */ (function () {
     function Usuario(username, region) {
         var titulo = new Titulo("a");
@@ -266,7 +276,7 @@ var Usuario = /** @class */ (function () {
         return this.region;
     };
     Usuario.prototype.visto = function (titulo) {
-        for (var i = 1; i < this.historial.length; i++) {
+        for (var i = 0; i < this.historial.length; i++) {
             if (this.historial[i].getTituloNombre() == titulo.getTitulo()) {
                 if (this.historial[i].getTerminada) {
                     return true;
@@ -276,32 +286,34 @@ var Usuario = /** @class */ (function () {
         return false;
     };
     Usuario.prototype.viendo = function (titulo) {
-        this.historial.forEach(function (element) {
-            if (element.getTituloNombre() == titulo.getTitulo()) {
-                if (element.getCapitulo() > 0 || element.getTiempo() > 0) {
-                    return true;
-                }
+        for (var i = 0; i < this.historial.length; i++) {
+            if (this.historial[i].getCapitulo() > 0 || this.historial[i].getTiempo() > 0) {
+                return true;
             }
-        });
+        }
         return false;
     };
     Usuario.prototype.capituloActual = function (serie) {
+        var x = 0;
         this.historial.forEach(function (element) {
             if (element.getTituloNombre() == serie.getTitulo()) {
-                return element.getCapitulo();
+                x = element.getCapitulo();
             }
         });
-        return 0;
+        return x;
     };
     Usuario.prototype.ver = function (titulo, tiempo_visualizado) {
         var temp1 = false;
-        var numeroi;
+        var numeroi = 0;
         var tiempo_pre_visualizado;
         var c = true;
         for (var i = 0; i < titulo.getNumeroDeRegiones(); i++) {
             if (this.region == titulo.getRegion(i)) {
                 temp1 = true;
             }
+        }
+        if (!temp1) {
+            return false;
         }
         if (!this.viendo(titulo)) {
             var a = new Historial(titulo, 0, 0, false);
@@ -310,17 +322,16 @@ var Usuario = /** @class */ (function () {
         this.historial.forEach(function (element) {
             if (element.getTituloNombre() == titulo.getTitulo()) {
                 numeroi = element.getCapitulo();
-                tiempo_pre_visualizado = element.setTiempo;
+                tiempo_pre_visualizado = element.getTiempo();
             }
         });
         tiempo_visualizado = tiempo_visualizado + tiempo_pre_visualizado;
-        while (titulo.getDuracionI(numeroi) >= tiempo_visualizado) {
+        while (titulo.getDuracionI(numeroi) <= tiempo_visualizado) {
             tiempo_visualizado = tiempo_visualizado - titulo.getDuracionI(numeroi);
             this.historial.forEach(function (element) {
                 if (element.getTituloNombre() == titulo.getTitulo()) {
-                    if (!element.sumarCapitulo) {
-                        c = false;
-                    }
+                    element.setTerminada(element.getCapitulo());
+                    element.sumarCapitulo();
                 }
             });
         }
