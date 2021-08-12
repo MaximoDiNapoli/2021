@@ -25,7 +25,6 @@ def def2(a):
     numero = 0
   return spanish3
 def a(df):
-  native = np.asarray(df[['WhatIsYourNativeLanguage']])
   spanishArray = np.asarray(df[['from1To10HowMuchDoYouLikeSpanish']])
   englishArray = np.asarray(df[['from1To10HowMuchDoYouLikeEnglish']])
   germanArray = np.asarray(df[['from1To10HowMuchDoYouLikeGerman']])
@@ -36,12 +35,21 @@ def a(df):
 
   x = [1,2,3,4,5,6,7,8,9,10]
   print("spanish")
+  plt.title('Spanish')
+  plt.xlabel('Opinion')
+  plt.ylabel('Cantidad de votos')
   plt.bar(x,ySpanish)
   plt.show()
   print("English")
+  plt1.title('Ingles')
+  plt1.xlabel('Opinion')
+  plt1.ylabel('Cantidad de votos')
   plt1.bar(x,yEnglish)
   plt1.show()
   print("German")
+  plt.title('Aleman')
+  plt.xlabel('Opinion')
+  plt.ylabel('Cantidad de votos')
   plt2.bar(x,yGerman)
   plt2.show()
 
@@ -60,3 +68,4 @@ print("DAS DENKEN DIE DEUTSCHEN")
 a(df3)
 print("other")
 a(df4)
+
