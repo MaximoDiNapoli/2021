@@ -33,8 +33,5 @@
 ## Tarea 13 de Mayo
 - [Codigo](https://github.com/MaximoDiNapoli/2021/tree/main/Soporte/Pandas1)
 
-## Tarea 6 de mayo
-- [Codigo](https://github.com/materiasipm/materiasipm.github.io/blob/master/taller6to/graficos1.ipynb)
-
 ## Tarea 15 de Abril
 - [Codigo](https://github.com/MaximoDiNapoli/2021/tree/main/Soporte/15Abril)
